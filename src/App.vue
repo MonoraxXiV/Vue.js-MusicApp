@@ -9,10 +9,10 @@
         <h2 class="songTitle">{{ current.title }} - <span>{{current.artist}}</span></h2>
         <!--placing controls here-->
         <div class="controls">
-          <button>Previous</button>
-          <button>Play</button>
-          <button>Pause</button>
-          <button>Next</button>
+          <button class="previous">Previous</button>
+          <button class="play" v-if="!isPlaying" @click="play">Play</button>
+          <button class="pause" v-else @click="Pause">Pause</button>
+          <button class="next">Next</button>
         </div>
       </section>
     </main>
@@ -29,6 +29,7 @@ export default {
       current: {
   /*      title: 'SONG TITLE'*/
       },
+      isPlaying: false,
       index: 1,
       songs: [
         {
@@ -53,11 +54,25 @@ export default {
       player: new Audio(),
     }
   },
+  methods:{
+    play(song){
+      if (typeof song.src != "undefined" ){
+      this.current = song;
+        this.player.src = this.current.src;
+      }
+      this.player.play();
+      this.isPlaying=true;
+    },
+    Pause(){
+      this.player.pause();
+      this.isPlaying=false;
+    },
+  },
   created (){
       this.current = this.songs[this.index];
       this.player.src = this.current.src;
-     /* comment/uncomment to test wether it plays*/
-      this.player.play();
+
+
   }
 
 }
